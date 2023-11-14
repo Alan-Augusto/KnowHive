@@ -1,75 +1,108 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class App {
 
+    public static List<Usuario> usuarios = new ArrayList<>();
+    public static Boolean login = false;
+
     public static void main(String[] args) {
-        // Criando usuários
+        povoar();
+        Scanner scanner = new Scanner(System.in);
+        String opEntrada = loginORsigin(scanner);
+        Boolean exit = false;
+
+        while (!exit || !login) {
+
+        }
+        if (opEntrada.equals("Cadastro")) {
+            cadastrar(scanner);
+        } else if (opEntrada.equals("Login")) {
+            fazerLogin(scanner);
+        }
+
+        while (login) {
+
+        }
+
+        scanner.close();
+    }
+
+    public static String loginORsigin(Scanner scanner) {
+        String opcaoSelecionada = "INVALIDO";
+
+        System.out.println("BEM VINDO AO KnowHive");
+        System.out.println(" Unindo Saberes, Elevando Conquistas");
+        System.out.println(" ------------------------------------");
+        System.out.println("Escolha uma opção:");
+        System.out.println("1 - Fazer Login \n2 - Cadastrar");
+
+        while (opcaoSelecionada.equals("INVALIDO")) {
+            String entradaUsuario = scanner.nextLine();
+
+            if (entradaUsuario.equals("1")) {
+                opcaoSelecionada = "Login";
+            } else if (entradaUsuario.equals("2")) {
+                opcaoSelecionada = "Cadastro";
+            } else {
+                System.out.println("!!OPÇÃO INVÁLIDA!!");
+                opcaoSelecionada = "INVALIDO";
+            }
+        }
+
+        System.out.println("selecionou -> " + opcaoSelecionada);
+        return opcaoSelecionada;
+    }
+
+    public static void cadastrar(Scanner scanner) {
+        System.out.println("Digite o nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Digite o email: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Digite a senha: ");
+        String senha = scanner.nextLine();
+
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(nome);
+        novoUsuario.setEmail(email);
+        novoUsuario.setSenha(senha);
+        usuarios.add(novoUsuario);
+
+        System.out.println("Usuário cadastrado com sucesso!");
+    }
+
+    public static void fazerLogin(Scanner scanner) {
+        System.out.println("Digite o email: ");
+        String email = scanner.nextLine();
+
+        boolean encontrado = false;
+        for (Usuario usuario : usuarios) {
+            if (usuario.getEmail().equals(email)) {
+                encontrado = true;
+                System.out.println("Login bem-sucedido para o usuário: " + usuario.getNome());
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("Usuário não encontrado. Faça o cadastro primeiro.");
+        }
+    }
+
+    public static void povoar() {
         Usuario usuario1 = new Usuario();
         usuario1.setNome("João");
         usuario1.setEmail("joao@email.com");
+        usuario1.setSenha("123");
+        usuarios.add(usuario1);
 
         Usuario usuario2 = new Usuario();
-        usuario2.setNome("Maria");
-        usuario2.setEmail("maria@email.com");
-
-        // Criando bibliotecas
-        Biblioteca biblioteca1 = new Biblioteca();
-        biblioteca1.setNome("Biblioteca de Matemática");
-        biblioteca1.setDescricao("Questões de matemática variadas");
-        biblioteca1.setVisibilidade(true); // Pública
-
-        Biblioteca biblioteca2 = new Biblioteca();
-        biblioteca2.setNome("Biblioteca de História");
-        biblioteca2.setDescricao("Questões de história mundial");
-        biblioteca2.setVisibilidade(false); // Privada
-
-        // Associando questões às bibliotecas
-        Questao questao1 = new Questao();
-        questao1.setEnunciado("Qual é a capital do Brasil?");
-        questao1.setObservacao("Questão de múltipla escolha");
-        questao1.setVisibilidade(true); // Pública
-
-        Alternativa alt1 = new Alternativa();
-        alt1.setTexto("Brasília");
-        alt1.setCorreta(true);
-
-        Alternativa alt2 = new Alternativa();
-        alt2.setTexto("São Paulo");
-        alt2.setCorreta(false);
-
-        questao1.novaAlternativa(alt1);
-        questao1.novaAlternativa(alt2);
-
-        Fonte fonte1 = new Fonte();
-        fonte1.setTexto("Livro de Geografia");
-        fonte1.setDescricao("Página 50");
-
-        questao1.novaFonte(fonte1);
-
-        Tag tag1 = new Tag();
-        tag1.setNome("Geografia");
-
-        questao1.novaTag(tag1);
-
-        biblioteca1.novaQuestao(questao1);
-
-        // Adicionar mais questões, associar às bibliotecas, etc.
-
-        // Compartilhando biblioteca2 com usuario1
-        usuario1.adicionarBibliotecaCompartilhada(biblioteca2, true); // Com permissão de edição
-
-        // Responder às questões da biblioteca1 (prova)
-        List<Questao> questoesProva = biblioteca1.getQuestoes();
-        List<RespostaQuestao> respostasProvaUsuario1 = new ArrayList<>();
-
-        for (Questao questao : questoesProva) {
-            // Lógica para responder às questões da prova pelo usuário1
-            // Preencher respostasProvaUsuario1 com as respostas dadas
-        }
-
-        // Gerar relatório de desempenho da prova para usuario1
-        RelatorioDesempenho relatorioUsuario1 = new RelatorioDesempenho();
-        relatorioUsuario1.gerarRelatorio(questoesProva, respostasProvaUsuario1);
+        usuario2.setNome("admin");
+        usuario2.setEmail("admin@email.com");
+        usuario1.setSenha("123");
+        usuarios.add(usuario2);
     }
 }

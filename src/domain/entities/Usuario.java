@@ -1,3 +1,5 @@
+package domain.entities;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,14 @@ public class Usuario {
     public Usuario() {
         bibliotecasCompartilhadas = new ArrayList<>();
     }
-    
+
+    public Usuario(String nome, String email, String senha, Date dataNascimento) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getNome() {
         return nome;
     }

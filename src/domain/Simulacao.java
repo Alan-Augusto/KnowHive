@@ -1,7 +1,7 @@
 package domain;
 
 import domain.entities.Usuario;
-import infrastructure.Auth;
+import domain.auth.Auth;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,23 +1,23 @@
 package domain.auth;
 
 import domain.entities.Usuario;
-import domain.errors.CredenciaisInvalidasException;
 import domain.errors.DataNascimentoInvalidaException;
+import domain.errors.UsuarioNaoEncontradoException;
+import domain.repositories.UsuarioRepositorio;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class Auth {
-    private List<Usuario> usuarios;
+    private UsuarioRepositorio usuarioRepositorio;
 
     private final int LOGIN = 1;
     private final int CADASTRAR = 2;
 
-    public Auth(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public Auth(UsuarioRepositorio repositorio) {
+        this.usuarioRepositorio = repositorio;
     }
 
     public Usuario processar(int opcao) {
@@ -43,20 +43,19 @@ public class Auth {
                 System.out.println("Login bem-sucedido para o usuario: " + usuarioEncontrado.getNome());
                 scanner.close();
                 return usuarioEncontrado;
-            } catch (CredenciaisInvalidasException e) {
-                System.out.println(e.getMessage());
+            } catch (UsuarioNaoEncontradoException e) {
+                System.out.println("Email ou senha invalidos!");
             }
         } while (true);
     }
 
     private Usuario procurarUsuario(String email, String senha) throws RuntimeException {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
-                return usuario;
-            }
+        try {
+            Usuario usuarioEncontrado = this.usuarioRepositorio.retornaPorEmailESenha(email, senha);
+            return usuarioEncontrado;
+        } catch (UsuarioNaoEncontradoException e) {
+            throw e;
         }
-
-        throw new CredenciaisInvalidasException();
     }
 
     private Usuario fazerCadastro() {
@@ -75,7 +74,7 @@ public class Auth {
         String senha = scanner.nextLine();
 
         Usuario novoUsuario = new Usuario(nome, email, senha, dataNascimento);
-        usuarios.add(novoUsuario);
+        this.usuarioRepositorio.salvar(novoUsuario);
 
         System.out.println("Cadastrado concluido com sucesso!");
 
@@ -107,9 +106,5 @@ public class Auth {
         } catch (ParseException e) {
             throw new DataNascimentoInvalidaException();
         }
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
     }
 }

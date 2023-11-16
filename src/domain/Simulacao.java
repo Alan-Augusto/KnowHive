@@ -2,13 +2,13 @@ package domain;
 
 import domain.entities.Usuario;
 import domain.auth.Auth;
+import domain.repositories.UsuarioRepositorio;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Simulacao {
-    private List<Usuario> usuarios;
+    private UsuarioRepositorio usuarioRepositorio;
     private Auth authenticator;
     private Scanner scanner;
 
@@ -16,16 +16,16 @@ public class Simulacao {
     private final int CADASTRAR = 2;
 
     public Simulacao() {
-        this.usuarios = new ArrayList<Usuario>();
+        this.usuarioRepositorio = new UsuarioRepositorio();
         popularUsuarios();
         this.scanner = new Scanner(System.in);
-        this.authenticator = new Auth(this.usuarios);
+        this.authenticator = new Auth(this.usuarioRepositorio);
     }
 
     public void iniciar() {
         imprimeBemVindo();
         int opcaoEscolhida = fazerLoginOuCadastrar();
-        this.authenticator.processar(opcaoEscolhida);
+        Usuario usuario = this.authenticator.processar(opcaoEscolhida);
     }
 
     private void popularUsuarios() {
@@ -33,14 +33,16 @@ public class Simulacao {
         usuario1.setNome("João");
         usuario1.setEmail("joao@email.com");
         usuario1.setSenha("123");
+        usuario1.setDataNascimento(new Date("01/01/2000"));
 
         Usuario usuario2 = new Usuario();
         usuario2.setNome("admin");
         usuario2.setEmail("admin@email.com");
         usuario2.setSenha("admin");
+        usuario2.setDataNascimento(new Date("31/12/1990"));
 
-        usuarios.add(usuario1);
-        usuarios.add(usuario2);
+        this.usuarioRepositorio.salvar(usuario1);
+        this.usuarioRepositorio.salvar(usuario2);
     }
 
     private void imprimeBemVindo() {
@@ -66,14 +68,6 @@ public class Simulacao {
         } while (opcaoEscolhida != LOGIN && opcaoEscolhida != CADASTRAR);
 
         return opcaoEscolhida;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 }
 

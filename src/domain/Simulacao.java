@@ -22,7 +22,7 @@ public class Simulacao {
         this.authenticator = new Auth(this.usuarios);
     }
 
-    public void run() {
+    public void iniciar() {
         imprimeBemVindo();
         int opcaoEscolhida = fazerLoginOuCadastrar();
         this.authenticator.processar(opcaoEscolhida);

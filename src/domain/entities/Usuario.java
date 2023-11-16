@@ -12,7 +12,7 @@ public class Usuario {
     private List<Biblioteca> bibliotecasCompartilhadas;
 
     public Usuario() {
-        bibliotecasCompartilhadas = new ArrayList<>();
+        this.bibliotecasCompartilhadas = new ArrayList<>();
     }
 
     public Usuario(String nome, String email, String senha, Date dataNascimento) {
@@ -20,6 +20,13 @@ public class Usuario {
         this.email = email;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
+        this.bibliotecasCompartilhadas = new ArrayList<>();
+    }
+
+    public void adicionarBibliotecaCompartilhada(Biblioteca biblioteca, boolean permissaoEdicao) {
+        // Definindo a visibilidade conforme a permissão de edição
+        biblioteca.setVisibilidade(permissaoEdicao);
+        bibliotecasCompartilhadas.add(biblioteca);
     }
 
     public String getNome() {
@@ -52,12 +59,6 @@ public class Usuario {
 
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public void adicionarBibliotecaCompartilhada(Biblioteca biblioteca, boolean permissaoEdicao) {
-        // Lógica para adicionar uma biblioteca compartilhada
-        biblioteca.setVisibilidade(permissaoEdicao); // Definindo a visibilidade conforme a permissão de edição
-        bibliotecasCompartilhadas.add(biblioteca);
     }
 
     public List<Biblioteca> getBibliotecasCompartilhadas() {

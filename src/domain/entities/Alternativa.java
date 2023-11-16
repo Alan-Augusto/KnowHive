@@ -1,3 +1,5 @@
+package domain.entities;
+
 public class Alternativa {
     private String texto;
     private boolean correta;

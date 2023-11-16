@@ -1,3 +1,5 @@
+package domain.entities;
+
 public class RespostaQuestao {
     private Questao questao;
     private String respostaUsuario;

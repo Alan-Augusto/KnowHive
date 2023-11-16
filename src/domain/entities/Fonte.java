@@ -1,3 +1,5 @@
+package domain.entities;
+
 public class Fonte {
     private String texto;
     private String descricao;

@@ -1,3 +1,5 @@
+package domain.entities;
+
 public class Tag {
     private String nome;
 

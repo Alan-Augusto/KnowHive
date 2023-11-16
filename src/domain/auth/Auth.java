@@ -1,6 +1,8 @@
 package domain.auth;
 
 import domain.entities.Usuario;
+import domain.errors.CredenciaisInvalidasException;
+import domain.errors.DataNascimentoInvalidaException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,8 +43,8 @@ public class Auth {
                 System.out.println("Login bem-sucedido para o usuario: " + usuarioEncontrado.getNome());
                 scanner.close();
                 return usuarioEncontrado;
-            } catch (RuntimeException e) {
-                System.out.println("Email ou senha invalidos!");
+            } catch (CredenciaisInvalidasException e) {
+                System.out.println(e.getMessage());
             }
         } while (true);
     }
@@ -54,7 +56,7 @@ public class Auth {
             }
         }
 
-        throw new RuntimeException("Usuario nao encontrado");
+        throw new CredenciaisInvalidasException();
     }
 
     private Usuario fazerCadastro() {
@@ -63,9 +65,8 @@ public class Auth {
         System.out.print("Digite seu nome: ");
         String nome = scanner.nextLine();
 
-        System.out.print("Digite sua data de nascimento (DD/MM/YYYY): ");
-        String dataString = scanner.nextLine();
-        Date dataNascimento = processarData(dataString);
+        // Requisita ao usuario uma data de nascimento valida
+        Date dataNascimento = promptDataNascimento(scanner);
 
         System.out.print("Digite seu email: ");
         String email = scanner.nextLine();
@@ -82,15 +83,29 @@ public class Auth {
         return novoUsuario;
     }
 
+    private Date promptDataNascimento(Scanner scanner) {
+        do {
+            System.out.print("Digite sua data de nascimento (DD/MM/YYYY): ");
+            String dataString = scanner.nextLine();
+
+            try {
+                Date dataNascimento = processarData(dataString);
+                return dataNascimento;
+            } catch (DataNascimentoInvalidaException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (true);
+    }
+
     private Date processarData(String dataString) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        formato.setLenient(false);
 
         try {
             Date data = formato.parse(dataString);
             return data;
         } catch (ParseException e) {
-            System.out.println("Erro ao analisar a data. Certifique-se de usar o formato dd/MM/yyyy.");
-            throw new RuntimeException("Data de nascimento invalida");
+            throw new DataNascimentoInvalidaException();
         }
     }
 

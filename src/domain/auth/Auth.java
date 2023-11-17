@@ -12,12 +12,14 @@ import java.util.Scanner;
 
 public class Auth {
     private UsuarioRepositorio usuarioRepositorio;
+    private Scanner scanner;
 
     private final int LOGIN = 1;
     private final int CADASTRAR = 2;
 
-    public Auth(UsuarioRepositorio repositorio) {
+    public Auth(UsuarioRepositorio repositorio, Scanner scanner) {
         this.usuarioRepositorio = repositorio;
+        this.scanner = scanner;
     }
 
     public Usuario processar(int opcao) {
@@ -28,8 +30,6 @@ public class Auth {
     }
 
     private Usuario fazerLogin() {
-        Scanner scanner = new Scanner(System.in);
-
         do {
             System.out.print("Digite seu email: ");
             String email = scanner.nextLine();
@@ -41,7 +41,6 @@ public class Auth {
                 Usuario usuarioEncontrado = procurarUsuario(email, senha);
 
                 System.out.println("Login bem-sucedido para o usuario: " + usuarioEncontrado.getNome());
-                scanner.close();
                 return usuarioEncontrado;
             } catch (UsuarioNaoEncontradoException e) {
                 System.out.println("Email ou senha invalidos!");
@@ -59,13 +58,11 @@ public class Auth {
     }
 
     private Usuario fazerCadastro() {
-        Scanner scanner = new Scanner(System.in);
-
         System.out.print("Digite seu nome: ");
         String nome = scanner.nextLine();
 
         // Requisita ao usuario uma data de nascimento valida
-        Date dataNascimento = promptDataNascimento(scanner);
+        Date dataNascimento = promptDataNascimento();
 
         System.out.print("Digite seu email: ");
         String email = scanner.nextLine();
@@ -78,11 +75,10 @@ public class Auth {
 
         System.out.println("Cadastrado concluido com sucesso!");
 
-        scanner.close();
         return novoUsuario;
     }
 
-    private Date promptDataNascimento(Scanner scanner) {
+    private Date promptDataNascimento() {
         do {
             System.out.print("Digite sua data de nascimento (DD/MM/YYYY): ");
             String dataString = scanner.nextLine();

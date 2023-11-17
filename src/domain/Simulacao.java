@@ -9,23 +9,36 @@ import java.util.Scanner;
 
 public class Simulacao {
     private UsuarioRepositorio usuarioRepositorio;
+    private Usuario usuarioAtual;
     private Auth authenticator;
     private Scanner scanner;
 
     private final int LOGIN = 1;
     private final int CADASTRAR = 2;
+    private final int SAIR = 0;
+    private final int CRIAR_BIBLIOTECA = 1;
+    private final int ADICIONAR_QUESTAO = 2;
+    private final int VISUALIZAR_BIBLIOTECA = 3;
+    private final int LISTAR_BIBLIOTECAS = 4;
+    private int[] comandosDisponiveis = new int[]{SAIR, CRIAR_BIBLIOTECA, ADICIONAR_QUESTAO, VISUALIZAR_BIBLIOTECA, LISTAR_BIBLIOTECAS};
 
     public Simulacao() {
         this.usuarioRepositorio = new UsuarioRepositorio();
         popularUsuarios();
+        this.usuarioAtual = null;
         this.scanner = new Scanner(System.in);
-        this.authenticator = new Auth(this.usuarioRepositorio);
+        this.authenticator = new Auth(this.usuarioRepositorio, this.scanner);
     }
 
     public void iniciar() {
         imprimeBemVindo();
+
         int opcaoEscolhida = fazerLoginOuCadastrar();
-        Usuario usuario = this.authenticator.processar(opcaoEscolhida);
+        this.usuarioAtual = this.authenticator.processar(opcaoEscolhida);
+
+        requisitarComandos();
+
+        this.scanner.close();
     }
 
     private void popularUsuarios() {
@@ -53,21 +66,79 @@ public class Simulacao {
     }
 
     private int fazerLoginOuCadastrar() {
+        int[] opcoes = new int[]{LOGIN, CADASTRAR};
         int opcaoEscolhida = 0;
         do {
             System.out.print("Escolha uma opção: ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Por favor, digite um número.");
-                scanner.next();
-            }
-            opcaoEscolhida = scanner.nextInt();
+            opcaoEscolhida = pegarNumero();
 
-            if (opcaoEscolhida != LOGIN && opcaoEscolhida != CADASTRAR) {
+            if (!opcaoEhValida(opcaoEscolhida, opcoes)) {
                 System.out.println("Opção inválida. Digite 1 ou 2.");
+                continue;
             }
-        } while (opcaoEscolhida != LOGIN && opcaoEscolhida != CADASTRAR);
+        } while (!opcaoEhValida(opcaoEscolhida, opcoes));
 
         return opcaoEscolhida;
+    }
+
+    // Solicita um numero ate o usuario prove-lo
+    private int pegarNumero() {
+        while (!scanner.hasNextInt()) {
+            System.out.println("Por favor, digite um número.");
+            scanner.next();
+        }
+
+        int numero = scanner.nextInt();
+
+        // Limpa o caracter \n do scanner
+        scanner.nextLine();
+
+        return numero;
+    }
+
+    private boolean opcaoEhValida(int opcaoEscolhida, int[] opcoes) {
+        for (int opcao: opcoes) {
+            if (opcao == opcaoEscolhida)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void requisitarComandos() {
+        int comandoEscolhido = -1;
+        do {
+            imprimeComandos();
+            comandoEscolhido = pegarNumero();
+
+            if (!opcaoEhValida(comandoEscolhido, comandosDisponiveis)) {
+                System.out.println("Comando invalido. Digite novamente");
+                continue;
+            }
+
+            processarComando(comandoEscolhido);
+        } while (true);
+    }
+
+    private void imprimeComandos() {
+        System.out.println("1 - Criar Biblioteca");
+        System.out.println("2 - Adicionar Questão");
+        System.out.println("3 - Visualizar Biblioteca");
+        System.out.println("4 - Listar bibliotecas existentes");
+        System.out.println("0 - Sair");
+        System.out.print("Selecione um comando: ");
+    }
+
+    // TODO
+    private void processarComando(int comando) {
+        switch (comando) {
+            case (SAIR):
+                System.exit(1);
+                break;
+
+            default:
+                throw new RuntimeException("Comando invalido: " + comando);
+        }
     }
 }
 

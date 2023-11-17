@@ -1,5 +1,9 @@
-package domain.entities;
+package tests.entities;
 
+import domain.entities.Alternativa;
+import domain.entities.Fonte;
+import domain.entities.Questao;
+import domain.entities.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

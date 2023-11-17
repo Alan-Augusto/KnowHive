@@ -1,5 +1,7 @@
-package domain.entities;
+package tests.entities;
 
+import domain.entities.Questao;
+import domain.entities.RespostaQuestao;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

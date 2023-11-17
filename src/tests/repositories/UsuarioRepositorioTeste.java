@@ -1,7 +1,8 @@
-package domain.repositories;
+package tests.repositories;
 
 import domain.entities.Usuario;
 import domain.errors.UsuarioNaoEncontradoException;
+import domain.repositories.UsuarioRepositorio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

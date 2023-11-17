@@ -1,11 +1,12 @@
-package domain.entities;
+package tests.entities;
 
+import domain.entities.Questao;
+import domain.entities.RelatorioDesempenho;
+import domain.entities.RespostaQuestao;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RelatorioDesempenhoTeste {
 
@@ -32,7 +33,7 @@ class RelatorioDesempenhoTeste {
         resposta2.setRespostaUsuario("Resposta 2");
         respostas.add(resposta2);
 
-        // Necessário fazer a checkagem do relatório no terminal.
+        // Necessario fazer a checagem do relatorio no terminal.
         relatorio.gerarRelatorio(questoes, respostas);
     }
 }

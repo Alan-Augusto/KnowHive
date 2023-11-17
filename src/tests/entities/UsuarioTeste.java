@@ -1,5 +1,7 @@
-package domain.entities;
+package tests.entities;
 
+import domain.entities.Biblioteca;
+import domain.entities.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

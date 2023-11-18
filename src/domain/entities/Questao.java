@@ -81,6 +81,14 @@ public class Questao {
         this.tags = tags;
     }
 
+    public void setTags(String stringTags) {
+        // Quebra a string por espaços em branco
+        String[] conjuntoTags = stringTags.split("\\s+");
+        for (String tag : conjuntoTags) {
+            this.tags.add(new Tag(tag));
+        }
+    }
+
     public List<Alternativa> getAlternativas() {
         return alternativas;
     }

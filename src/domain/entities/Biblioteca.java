@@ -13,6 +13,26 @@ public class Biblioteca {
         questoes = new ArrayList<>();
     }
 
+    public Biblioteca(String nome) {
+        this.nome = nome;
+        this.questoes = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder texto = new StringBuilder();
+        texto.append("Nome: " + this.nome + "\n");
+        texto.append("Descricao: " + this.descricao + "\n");
+        texto.append("Questoes: " + "\n");
+
+        for (int i = 0; !questoes.isEmpty(); i++) {
+            texto.append("Questao " + (i + 1));
+            texto.append(questoes.get(i).toString());
+        }
+
+        return texto.toString();
+    }
+
     public String getNome() {
         return nome;
     }

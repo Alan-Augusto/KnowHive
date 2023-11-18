@@ -1,5 +1,6 @@
 package domain;
 
+import domain.entities.Biblioteca;
 import domain.entities.Usuario;
 import domain.auth.Auth;
 import domain.repositories.UsuarioRepositorio;
@@ -36,9 +37,10 @@ public class Simulacao {
         int opcaoEscolhida = fazerLoginOuCadastrar();
         this.usuarioAtual = this.authenticator.processar(opcaoEscolhida);
 
-        requisitarComandos();
-
-        this.scanner.close();
+        do {
+            int comandoEscolhido = requisitarComando(obterTextoComandos(), comandosDisponiveis);
+            processarComando(comandoEscolhido);
+        } while (true);
     }
 
     private void popularUsuarios() {
@@ -67,18 +69,24 @@ public class Simulacao {
 
     private int fazerLoginOuCadastrar() {
         int[] opcoes = new int[]{LOGIN, CADASTRAR};
-        int opcaoEscolhida = 0;
-        do {
-            System.out.print("Escolha uma opção: ");
-            opcaoEscolhida = pegarNumero();
-
-            if (!opcaoEhValida(opcaoEscolhida, opcoes)) {
-                System.out.println("Opção inválida. Digite 1 ou 2.");
-                continue;
-            }
-        } while (!opcaoEhValida(opcaoEscolhida, opcoes));
+        int opcaoEscolhida = requisitarComando("Escolha uma opção: ", opcoes);
 
         return opcaoEscolhida;
+    }
+
+    private int requisitarComando(String prompt, int[] comandos) {
+        int comandoEscolhido = -1;
+        do {
+            System.out.print(prompt);
+            comandoEscolhido = pegarNumero();
+
+            if (!opcaoEhValida(comandoEscolhido, comandos)) {
+                System.out.println("Opcao invalida. Digite novamente");
+                continue;
+            }
+
+            return comandoEscolhido;
+        } while (true);
     }
 
     // Solicita um numero ate o usuario prove-lo
@@ -105,28 +113,16 @@ public class Simulacao {
         return false;
     }
 
-    private void requisitarComandos() {
-        int comandoEscolhido = -1;
-        do {
-            imprimeComandos();
-            comandoEscolhido = pegarNumero();
+    private String obterTextoComandos() {
+        StringBuilder textoComandos = new StringBuilder();
+        textoComandos.append("1 - Criar Biblioteca\n");
+        textoComandos.append("2 - Adicionar Questão\n");
+        textoComandos.append("3 - Visualizar Biblioteca\n");
+        textoComandos.append("4 - Listar bibliotecas existentes\n");
+        textoComandos.append("0 - Sair\n");
+        textoComandos.append("Selecione um comando: ");
 
-            if (!opcaoEhValida(comandoEscolhido, comandosDisponiveis)) {
-                System.out.println("Comando invalido. Digite novamente");
-                continue;
-            }
-
-            processarComando(comandoEscolhido);
-        } while (true);
-    }
-
-    private void imprimeComandos() {
-        System.out.println("1 - Criar Biblioteca");
-        System.out.println("2 - Adicionar Questão");
-        System.out.println("3 - Visualizar Biblioteca");
-        System.out.println("4 - Listar bibliotecas existentes");
-        System.out.println("0 - Sair");
-        System.out.print("Selecione um comando: ");
+        return textoComandos.toString();
     }
 
     // TODO
@@ -136,9 +132,27 @@ public class Simulacao {
                 System.exit(1);
                 break;
 
+            case (CRIAR_BIBLIOTECA):
+                criarBiblioteca();
+                break;
+
             default:
                 throw new RuntimeException("Comando invalido: " + comando);
         }
+    }
+
+    private void criarBiblioteca() {
+        System.out.print("Digite o nome da nova biblioteca: ");
+        String nomeBiblioteca = scanner.nextLine();
+
+        String opcoesTexto = "1 - Publico\n2 - Privado\nEscolha a visibilidade da biblioteca: ";
+
+        int visibilidadeEscolhida = requisitarComando(opcoesTexto, new int[]{1, 2});
+        boolean ehPublico = visibilidadeEscolhida == 1;
+
+        this.usuarioAtual.adicionarBibliotecaCompartilhada(new Biblioteca(nomeBiblioteca), ehPublico);
+
+        System.out.println("Biblioteca '" + nomeBiblioteca + "' criada com sucesso");
     }
 }
 

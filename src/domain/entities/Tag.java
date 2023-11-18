@@ -7,6 +7,10 @@ public class Tag {
         this.nome = nome;
     }
 
+    public Tag() {
+        this.nome = "";
+    }
+
     public String getNome() {
         return nome;
     }

@@ -125,7 +125,6 @@ public class Simulacao {
         return textoComandos.toString();
     }
 
-    // TODO
     private void processarComando(int comando) {
         switch (comando) {
             case (SAIR):
@@ -134,6 +133,18 @@ public class Simulacao {
 
             case (CRIAR_BIBLIOTECA):
                 criarBiblioteca();
+                break;
+
+            case (ADICIONAR_QUESTAO):
+                adicionarQuestao();
+                break;
+
+            case (VISUALIZAR_BIBLIOTECA):
+                visualizarBiblioteca();
+                break;
+
+            case (LISTAR_BIBLIOTECAS):
+                listarBibliotecas();
                 break;
 
             default:
@@ -153,6 +164,21 @@ public class Simulacao {
         this.usuarioAtual.adicionarBibliotecaCompartilhada(new Biblioteca(nomeBiblioteca), ehPublico);
 
         System.out.println("Biblioteca '" + nomeBiblioteca + "' criada com sucesso");
+    }
+
+    // TODO
+    private void adicionarQuestao() {
+
+    }
+
+    // TODO
+    private void visualizarBiblioteca() {
+
+    }
+
+    // TODO
+    private void listarBibliotecas() {
+
     }
 }
 

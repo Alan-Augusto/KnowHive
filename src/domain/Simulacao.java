@@ -259,19 +259,19 @@ public class Simulacao {
 
     private void imprimirQuestoes(Biblioteca biblioteca) {
         List<Questao> questoes = biblioteca.getQuestoes();
-        for (int j = 0; j < questoes.size(); j++) {
-            Questao questaoAtual = questoes.get(j);
+        for (int i = 0; i < questoes.size(); i++) {
+            Questao questaoAtual = questoes.get(i);
 
-            System.out.println("\t" + (j+1) + ". " + questaoAtual.getEnunciado());
-            imprimirAlternativas(questaoAtual,j+1);
+            System.out.println("\t" + (i+1) + ". " + questaoAtual.getEnunciado());
+            imprimirAlternativas(questaoAtual,i+1);
         }
     }
 
     private void imprimirAlternativas(Questao questao, int index) {
         List<Alternativa> alternativas = questao.getAlternativas();
-        for (int k = 0; k < alternativas.size(); k++) {
-            Alternativa alternativa = alternativas.get(k);
-            System.out.print("\t\t" + index + "." + (k+1) + ". ");
+        for (int j = 0; j < alternativas.size(); j++) {
+            Alternativa alternativa = alternativas.get(j);
+            System.out.print("\t\t" + index + "." + (j+1) + ". ");
 
             if (alternativa.isCorreta())
                 System.out.print("(V) ");

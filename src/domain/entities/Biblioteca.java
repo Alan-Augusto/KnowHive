@@ -15,7 +15,7 @@ public class Biblioteca {
 
     public Biblioteca(String nome, String descricao) {
         this.nome = nome;
-        this.descricao = descricao
+        this.descricao = descricao;
         this.questoes = new ArrayList<>();
     }
 

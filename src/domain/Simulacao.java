@@ -167,12 +167,15 @@ public class Simulacao {
         System.out.print("Digite o nome da nova biblioteca: ");
         String nomeBiblioteca = scanner.nextLine();
 
+        System.out.print("Digite a descricao da biblioteca: ");
+        String descricao = scanner.nextLine();
+
         String opcoesTexto = "1 - Publico\n2 - Privado\nEscolha a visibilidade da biblioteca: ";
 
         int visibilidadeEscolhida = requisitarComando(opcoesTexto, new int[]{1, 2});
         boolean ehPublico = visibilidadeEscolhida == 1;
 
-        this.usuarioAtual.adicionarBibliotecaCompartilhada(new Biblioteca(nomeBiblioteca), ehPublico);
+        this.usuarioAtual.adicionarBibliotecaCompartilhada(new Biblioteca(nomeBiblioteca, descricao), ehPublico);
 
         System.out.println("Biblioteca '" + nomeBiblioteca + "' criada com sucesso");
     }

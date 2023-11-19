@@ -247,8 +247,37 @@ public class Simulacao {
         return alternativas;
     }
 
-    // TODO
     private void visualizarBiblioteca() {
+        Biblioteca biblioteca = requisitarNomeBiblioteca();
+
+        System.out.println("Nome: " + biblioteca.getNome());
+        System.out.println("Descricao: " + biblioteca.getDescricao());
+        System.out.println("Questoes:");
+
+        imprimirQuestoes(biblioteca);
+    }
+
+    private void imprimirQuestoes(Biblioteca biblioteca) {
+        List<Questao> questoes = biblioteca.getQuestoes();
+        for (int j = 0; j < questoes.size(); j++) {
+            Questao questaoAtual = questoes.get(j);
+
+            System.out.println("\t" + (j+1) + ". " + questaoAtual.getEnunciado());
+            imprimirAlternativas(questaoAtual,j+1);
+        }
+    }
+
+    private void imprimirAlternativas(Questao questao, int index) {
+        List<Alternativa> alternativas = questao.getAlternativas();
+        for (int k = 0; k < alternativas.size(); k++) {
+            Alternativa alternativa = alternativas.get(k);
+            System.out.print("\t\t" + index + "." + (k+1) + ". ");
+
+            if (alternativa.isCorreta())
+                System.out.print("(V) ");
+
+            System.out.println(alternativa.getTexto());
+        }
     }
 
     private void listarBibliotecas() {

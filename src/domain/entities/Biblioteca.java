@@ -25,7 +25,7 @@ public class Biblioteca {
         texto.append("Descricao: " + this.descricao + "\n");
         texto.append("Questoes: " + "\n");
 
-        for (int i = 0; !questoes.isEmpty(); i++) {
+        for (int i = 0; i < questoes.size(); i++) {
             texto.append("Questao " + (i + 1));
             texto.append(questoes.get(i).toString());
         }

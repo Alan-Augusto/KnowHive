@@ -11,10 +11,19 @@ public class Questao {
     private List<Tag> tags;
     private List<Alternativa> alternativas;
 
+    public Questao(String enunciado, List<Alternativa> alternativas) {
+        this.enunciado = enunciado;
+        this.alternativas = alternativas;
+        this.tags = new ArrayList<>();
+        this.fontes = new ArrayList<>();
+        this.visibilidade = false;
+    }
+
     public Questao() {
-        fontes = new ArrayList<>();
-        tags = new ArrayList<>();
-        alternativas = new ArrayList<>();
+        this.fontes = new ArrayList<>();
+        this.tags = new ArrayList<>();
+        this.alternativas = new ArrayList<>();
+        this.visibilidade = false;
     }
 
     public String getEnunciado() {
